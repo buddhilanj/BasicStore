@@ -6,6 +6,7 @@
     "paths": {
       "@screens/*": ["src/screens/*"],
       "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
       "@navigation/*": ["src/navigation/*"],
       "@assets/*": ["assets/*"],
       "@utils/*": ["src/utils/*"],
@@ -15,6 +16,6 @@
       "@slices/*": ["src/store/slices/*"],
       "@api/*": ["src/api/*"],
       "@apiServices/*": ["src/api/services/*"],
-    }
+            }
   }
 }

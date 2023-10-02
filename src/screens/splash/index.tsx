@@ -1,0 +1,12 @@
+import { Text, View } from 'react-native';
+import React from 'react';
+
+import styles from './style';
+
+export default function SplashScreen() {
+  return (
+    <View style={styles.container}>
+      <Text>Splash Screen</Text>
+    </View>
+  );
+}
