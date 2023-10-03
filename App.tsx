@@ -1,4 +1,4 @@
-import AppNavigation from '@navigation/AppNavigation';
+import AppNavigation from '@navigation/index';
 import React from 'react';
 
 export default function App() {

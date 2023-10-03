@@ -39,7 +39,9 @@
       "react/prop-types": 0,
       "no-shadow": "off",
       "@typescript-eslint/no-shadow": ["error"],
-      "import/no-extraneous-dependencies": "off"
+      "import/no-extraneous-dependencies": "off",
+      "no-param-reassign": ["error", { "props": false }],
+      "react-hooks/exhaustive-deps":"warn"
     }
   }
   
