@@ -7,6 +7,7 @@ async function getProducts(limit: number = 0, skip: number = 0): Promise<Product
   const params = {
     limit,
     skip,
+    select: 'id,title,price,description,thumbnail',
   };
   const response = await axios.API.get(url, { params });
   const responseData: unknown = handleResponse(response);
