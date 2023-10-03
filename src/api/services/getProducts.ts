@@ -2,8 +2,13 @@ import axios from '@api/client';
 import handleResponse from '@api/utils/handleResponse';
 import { isProductResponse, ProductResponse } from '@apiModels/productResponse';
 
-async function getProducts(): Promise<ProductResponse> {
-  const response = await axios.API.get('/products');
+async function getProducts(limit: number = 0, skip: number = 0): Promise<ProductResponse> {
+  const url = '/products';
+  const params = {
+    limit,
+    skip,
+  };
+  const response = await axios.API.get(url, { params });
   const responseData: unknown = handleResponse(response);
   if (isProductResponse(responseData)) {
     return responseData;
