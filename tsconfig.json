@@ -13,9 +13,10 @@
       "@hooks/*": ["src/hooks/*"],
       "@models/*": ["src/models/*"],
       "@store/*": ["src/store/*"],
-      "@slices/*": ["src/store/slices/*"],
+      "@slices/*": ["src/slices/*"],
       "@api/*": ["src/api/*"],
       "@apiServices/*": ["src/api/services/*"],
-            }
+      "@apiModels/*": ["src/api/models/*"],
+    }
   }
 }
