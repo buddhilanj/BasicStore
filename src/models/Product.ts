@@ -3,7 +3,7 @@ export interface Product {
   title: string;
   price: number;
   description: string;
-  images: string[];
+  thumbnail: string;
 }
 
 export function isProduct(object: unknown): object is Product {
@@ -14,15 +14,14 @@ export function isProduct(object: unknown): object is Product {
     'title' in object &&
     'price' in object &&
     'description' in object &&
-    'images' in object
+    'thumbnail' in object
   ) {
     return (
       typeof object.id === 'number' &&
       typeof object.title === 'string' &&
       typeof object.price === 'number' &&
       typeof object.description === 'string' &&
-      Array.isArray(object.images) &&
-      object.images.every(image => typeof image === 'string')
+      typeof object.thumbnail === 'string'
     );
   }
   return false;

@@ -11,15 +11,22 @@ const { width } = Dimensions.get('window');
 interface ProductListProps {
   products: Product[];
   reloadNext: () => void;
+  onProductPress: (product: Product) => void;
 }
 
-export default function ProductList({ products, reloadNext }: ProductListProps) {
+export default function ProductList({ products, reloadNext, onProductPress }: ProductListProps) {
   const numColumns = Math.floor(width / ITEM_WIDTH_MIN);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={products}
-        renderItem={({ item }) => <ProductListItem product={item} itemsPerRow={numColumns} />}
+        renderItem={({ item }) => (
+          <ProductListItem
+            product={item}
+            itemsPerRow={numColumns}
+            onProductPress={onProductPress}
+          />
+        )}
         keyExtractor={item => `${item.id}`}
         numColumns={numColumns}
         onEndReached={reloadNext}

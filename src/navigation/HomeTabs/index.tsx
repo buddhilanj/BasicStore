@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import SCREENS from '@constants/screens';
 import HomeScreen from '@screens/home';
 import CartScreen from '@screens/cart';
 
@@ -16,8 +15,8 @@ interface Tabs {
 }
 
 const TABS: Tabs[] = [
-  { id: SCREENS.APP.HOME.HOME, component: HomeScreen, icon: 'home', name: 'Home' },
-  { id: SCREENS.APP.HOME.CART, component: CartScreen, icon: 'cart', name: 'Cart' },
+  { id: 'HomeScreen', component: HomeScreen, icon: 'home', name: 'Home' },
+  { id: 'CartScreen', component: CartScreen, icon: 'cart', name: 'Cart' },
 ];
 
 interface TabIconProps {
