@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image } from 'react-native';
 import { CartItem } from '@models/CartItem';
 import IconButton from '@components/generic/IconButton';
@@ -10,7 +10,7 @@ interface CartListItemProps {
   onChangeAmount: (cartItem: CartItem, amount: number) => void;
 }
 
-export default function CartListItem({ cartItem, onRemove, onChangeAmount }: CartListItemProps) {
+function CartListItem({ cartItem, onRemove, onChangeAmount }: CartListItemProps) {
   return (
     <View style={[styles.row, styles.container, styles.wrapper]}>
       <Image style={styles.thumbnail} source={{ uri: cartItem.thumbnail }} />
@@ -40,3 +40,5 @@ export default function CartListItem({ cartItem, onRemove, onChangeAmount }: Car
     </View>
   );
 }
+
+export default memo(CartListItem);

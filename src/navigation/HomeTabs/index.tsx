@@ -4,12 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import HomeScreen from '@screens/home';
 import CartScreen from '@screens/cart';
+import { HomeTabsParamList } from '@navigation/types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
 interface Tabs {
   name: string;
-  id: string;
+  id: keyof HomeTabsParamList;
   component: () => React.JSX.Element;
   icon: keyof typeof Ionicons.glyphMap;
 }
