@@ -1,17 +1,21 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import styles from './styles';
 
 interface CartTotalProps {
   total: number;
+  onCheckout: () => void;
 }
 
-export default function CartTotal({ total }: CartTotalProps) {
+export default function CartTotal({ total, onCheckout }: CartTotalProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Cart Total:</Text>
-      <View style={styles.fill} />
-      <Text style={styles.text}>{total}</Text>
+      <View style={styles.row}>
+        <Text style={styles.text}>Cart Total:</Text>
+        <View style={styles.fill} />
+        <Text style={styles.text}>{total}</Text>
+      </View>
+      <Button title="Checkout" disabled={total <= 0} onPress={onCheckout} />
     </View>
   );
 }
