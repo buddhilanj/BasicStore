@@ -38,7 +38,7 @@ export default function ProductScreen() {
 
   useEffect(() => {
     fetchProduct(productId);
-  }, []);
+  }, [productId]);
 
   if (product === null)
     return (
@@ -54,7 +54,7 @@ export default function ProductScreen() {
           <Image key={image} style={styles.imageView} source={{ uri: image }} />
         ))}
       </PagerView>
-      <Text style={[styles.normalText, styles.titleText]}>Title: {product.title}</Text>
+      <Text style={[styles.normalText, styles.titleText]}>{product.title}</Text>
       <Text style={[styles.normalText]}>Price: {product.price}</Text>
       <Text style={[styles.normalText]}>Available Quantity: {product.stock}</Text>
       <Text style={[styles.normalText]}>Description: {product.description}</Text>
