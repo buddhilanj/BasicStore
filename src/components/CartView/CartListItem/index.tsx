@@ -4,11 +4,11 @@ import { CartItem } from '@models/CartItem';
 import IconButton from '@components/generic/IconButton';
 import styles from './style';
 
-interface CartListItemProps {
+type CartListItemProps = {
   cartItem: CartItem;
   onRemove: (cartItem: CartItem) => void;
   onChangeAmount: (cartItem: CartItem, amount: number) => void;
-}
+};
 
 function CartListItem({ cartItem, onRemove, onChangeAmount }: CartListItemProps) {
   return (

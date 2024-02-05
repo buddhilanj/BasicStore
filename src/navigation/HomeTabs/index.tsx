@@ -8,23 +8,23 @@ import { HomeTabsParamList } from '@navigation/types';
 
 const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
-interface Tabs {
+type Tabs = {
   name: string;
   id: keyof HomeTabsParamList;
   component: () => React.JSX.Element;
   icon: keyof typeof Ionicons.glyphMap;
-}
+};
 
 const TABS: Tabs[] = [
   { id: 'HomeScreen', component: HomeScreen, icon: 'home', name: 'Home' },
   { id: 'CartScreen', component: CartScreen, icon: 'cart', name: 'Cart' },
 ];
 
-interface TabIconProps {
+type TabIconProps = {
   name: keyof typeof Ionicons.glyphMap;
   color: string;
   size: number;
-}
+};
 
 function TabIcon({ name, color, size }: TabIconProps) {
   return <Ionicons name={name} size={size} color={color} />;

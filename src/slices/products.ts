@@ -12,13 +12,13 @@ export const fetchProducts = createAsyncThunk<ProductResponse, number | undefine
   },
 );
 
-export interface ProductsState {
+type ProductsState = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   products: Product[];
   length: number;
   total: number;
-}
+};
 
 const initialState: ProductsState = {
   status: 'idle',

@@ -1,15 +1,31 @@
 import { Product } from './Product';
+import Color, { isRGBColor } from './ProductColor';
+import { ProductSize } from './ProductSize';
 
 export interface CartItem extends Product {
   recordId: number;
   quantity: number;
+  selectedVarient: CartItemVariation[];
 }
 
+export type CartItemVariation =
+  | {
+      type: 'size';
+      size: ProductSize;
+    }
+  | { type: 'color'; color: Color };
+
 interface WrapperProps {
-  new?: { recordID: number; product: Product; quantity: number };
+  new?: {
+    recordID: number;
+    product: Product;
+    quantity: number;
+    selectedVarient: CartItemVariation[];
+  };
   cartItem?: CartItem;
 }
 
+// here we are not implementing CartItem interface as we dont want devs using this class to save data in redux
 export class CartItemWrapper {
   recordId: number;
 
@@ -25,6 +41,8 @@ export class CartItemWrapper {
 
   quantity: number;
 
+  selectedVarient: CartItemVariation[];
+
   constructor(obj: WrapperProps) {
     if (!obj.cartItem && !obj.new) {
       throw new Error('Invalid CartItemWrapper initialization');
@@ -36,6 +54,7 @@ export class CartItemWrapper {
     this.description = obj.new?.product.description || obj.cartItem?.description || '';
     this.thumbnail = obj.new?.product.thumbnail || obj.cartItem?.thumbnail || '';
     this.quantity = obj.new?.quantity || obj.cartItem?.quantity || 0;
+    this.selectedVarient = obj.new?.selectedVarient || obj.cartItem?.selectedVarient || [];
   }
 
   isSameProduct(product: Product): boolean {
@@ -43,7 +62,7 @@ export class CartItemWrapper {
   }
 
   getCartItem = (): CartItem => {
-    const { recordId, id, title, price, description, thumbnail, quantity } = this;
+    const { recordId, id, title, price, description, thumbnail, quantity, selectedVarient } = this;
     return {
       recordId,
       id,
@@ -52,6 +71,22 @@ export class CartItemWrapper {
       description,
       thumbnail,
       quantity,
+      selectedVarient,
     } satisfies CartItem;
+  };
+
+  getKey = (): string => {
+    return `${this.id}${this.selectedVarient?.map(
+      variant =>
+        `-${
+          variant.type === 'size'
+            ? `s.${variant.size}`
+            : `c.${
+                isRGBColor(variant.color)
+                  ? `R${variant.color.red}G${variant.color.green}B${variant.color.blue}`
+                  : variant.color
+              }`
+        }`,
+    )}`;
   };
 }

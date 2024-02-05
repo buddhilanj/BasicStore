@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-interface IconButtonProps {
+type IconButtonProps = {
   icon: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
-}
+};
 
 const styles = StyleSheet.create({
   container: {

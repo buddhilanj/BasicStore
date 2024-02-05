@@ -5,11 +5,11 @@ import { CartItem } from '@models/CartItem';
 import CartListItem from './CartListItem';
 import styles from './style';
 
-interface CartViewProps {
+type CartViewProps = {
   cartItems: CartItem[];
   onRemove: (cartItem: CartItem) => void;
   onChangeAmount: (cartItem: CartItem, amount: number) => void;
-}
+};
 
 function EmptyCartView(): JSX.Element {
   return (

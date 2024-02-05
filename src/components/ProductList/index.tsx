@@ -8,11 +8,11 @@ import { ITEM_WIDTH_MIN } from './ProductListItem/style';
 
 const { width } = Dimensions.get('window');
 
-interface ProductListProps {
+type ProductListProps = {
   products: Product[];
   reloadNext: () => void;
   onProductPress: (product: Product) => void;
-}
+};
 
 export default function ProductList({ products, reloadNext, onProductPress }: ProductListProps) {
   const numColumns = Math.floor(width / ITEM_WIDTH_MIN);
