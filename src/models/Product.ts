@@ -1,9 +1,18 @@
+import ProductColor from './ProductColor';
+import { ProductSize } from './ProductSize';
+
 export interface Product {
   id: number;
   title: string;
   price: number;
   description: string;
   thumbnail: string;
+  variations?: ProductVariations;
+}
+
+export interface ProductVariations {
+  size: ProductSize[];
+  color: ProductColor[];
 }
 
 export function isProduct(object: unknown): object is Product {

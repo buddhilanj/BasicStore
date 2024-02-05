@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 import styles from './styles';
 
-interface CartTotalProps {
+type CartTotalProps = {
   total: number;
   onCheckout: () => void;
-}
+};
 
 export default function CartTotal({ total, onCheckout }: CartTotalProps) {
   return (

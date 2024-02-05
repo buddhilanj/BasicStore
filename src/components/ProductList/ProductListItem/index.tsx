@@ -4,11 +4,11 @@ import React, { memo } from 'react';
 import { Product } from '@models/Product';
 import getStyles from './style';
 
-interface ProductListItemProps {
+type ProductListItemProps = {
   product: Product;
   itemsPerRow: number;
   onProductPress: (product: Product) => void;
-}
+};
 
 function ProductListItem({ product, itemsPerRow, onProductPress }: ProductListItemProps) {
   const styles = getStyles(itemsPerRow);
