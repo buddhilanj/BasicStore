@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  split: {
+    gap: 6,
+  },
 });
 
 export default styles;

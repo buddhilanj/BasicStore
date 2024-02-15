@@ -12,27 +12,40 @@ type CartListItemProps = {
 
 function CartListItem({ cartItem, onRemove, onChangeAmount }: CartListItemProps) {
   return (
-    <View style={[styles.row, styles.container, styles.wrapper]}>
+    <View style={[styles.row, styles.container, styles.wrapper, styles.split]}>
       <Image style={styles.thumbnail} source={{ uri: cartItem.thumbnail }} />
-      <View style={styles.container}>
+      <View style={[styles.container]}>
         <Text style={(styles.text, styles.titleText)}>{cartItem.title}</Text>
+        <View style={[styles.row, styles.split]}>
+          {cartItem.selectedVarient.map(variation => (
+            <Text>
+              {variation.type === 'color'
+                ? `Color: ${variation.color.name}`
+                : `Size: ${variation.size}`}
+            </Text>
+          ))}
+        </View>
         <View style={[styles.row]}>
           <Text style={styles.text}>Price : {cartItem.price}</Text>
-          <View style={styles.row}>
+          <View style={[styles.row, styles.container]}>
             <Text style={styles.text}>Qty</Text>
-            <IconButton
-              icon="add-circle"
-              onPress={() => {
-                onChangeAmount(cartItem, 1);
-              }}
-            />
-            <Text style={styles.text}>{cartItem.quantity}</Text>
-            <IconButton
-              icon="remove-circle"
-              onPress={() => {
-                onChangeAmount(cartItem, -1);
-              }}
-            />
+            <View style={[styles.row, styles.container]}>
+              <IconButton
+                icon="add-circle"
+                size={20}
+                onPress={() => {
+                  onChangeAmount(cartItem, 1);
+                }}
+              />
+              <Text style={styles.text}>{cartItem.quantity}</Text>
+              <IconButton
+                icon="remove-circle"
+                size={20}
+                onPress={() => {
+                  onChangeAmount(cartItem, -1);
+                }}
+              />
+            </View>
           </View>
         </View>
       </View>

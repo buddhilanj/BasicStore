@@ -4,20 +4,19 @@ import { Button, Image, Text, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import getProduct from '@api/services/getProduct';
-import { useAppDispatch, useAppSelector } from '@hooks/reduxHooks';
-import { ProductDetail } from '@models/ProductDetail';
+import ProductVariations from '@components/ProductVariations';
+import { useAppDispatch } from '@hooks/reduxHooks';
 import { CartItemVariation, CartItemWrapper } from '@models/CartItem';
+import { isProduct } from '@models/Product';
+import Color from '@models/ProductColor';
+import { ProductDetail } from '@models/ProductDetail';
+import { ProductSize } from '@models/ProductSize';
 import { ProductScreenRouteProp } from '@navigation/types';
 import { addItem } from '@slices/cart';
-import { Product, isProduct } from '@models/Product';
-import Color, { isRGBColor } from '@models/ProductColor';
-import UnscrollableList from '@components/generic/UnscrollableList';
-import { ProductSize } from '@models/ProductSize';
 import styles from './style';
 
 export default function ProductScreen() {
   const dispatch = useAppDispatch();
-  const length = useAppSelector(state => state.cart.items.length);
   const navigation = useNavigation();
   const route = useRoute<ProductScreenRouteProp>();
   const [product, setProduct] = useState<ProductDetail | null>(null);
@@ -25,30 +24,31 @@ export default function ProductScreen() {
   const [selectedSize, setSelectedSize] = useState<ProductSize | null>(null);
   const { productId } = route.params;
 
-  const fetchProduct = async (id: number) => {
-    const rProduct: ProductDetail = await getProduct(id);
-    setProduct(rProduct);
-  };
-
   const handleAddToCart = () => {
     if (!isProduct(product)) {
       return;
     }
-
-    const vals: {
-      recordID: number;
-      product: Product;
-      quantity: number;
-      selectedVarient: CartItemVariation[];
-    } = { recordID: length + 1, product, quantity: 1, selectedVarient: [] };
-    if (selectedColor) vals.selectedVarient.push({ type: 'color', color: selectedColor });
-    if (selectedSize) vals.selectedVarient.push({ type: 'size', size: selectedSize });
-    const cartItem = new CartItemWrapper({ new: vals });
+    const selectedVarient: CartItemVariation[] = [];
+    if (selectedColor) selectedVarient.push({ type: 'color', color: selectedColor });
+    if (selectedSize) selectedVarient.push({ type: 'size', size: selectedSize });
+    const cartItem = new CartItemWrapper(product, 1, selectedVarient, {});
     dispatch(addItem(cartItem.getCartItem()));
     navigation.goBack();
   };
 
+  const handleColorSelected = (color: Color) => {
+    setSelectedColor(color);
+  };
+
+  const handleSizeSelected = (size: ProductSize) => {
+    setSelectedSize(size);
+  };
+
   useEffect(() => {
+    const fetchProduct = async (id: number) => {
+      const rProduct: ProductDetail = await getProduct(id);
+      setProduct(rProduct);
+    };
     fetchProduct(productId);
   }, [productId]);
 
@@ -70,28 +70,12 @@ export default function ProductScreen() {
       <Text style={[styles.normalText]}>Price: {product.price}</Text>
       <Text style={[styles.normalText]}>Available Quantity: {product.stock}</Text>
       <Text style={[styles.normalText]}>Description: {product.description}</Text>
-      <View style={{ flexDirection: 'row' }}>
-        <UnscrollableList
-          list={
-            product.variations?.color.map(color => (isRGBColor(color) ? color.name : color)) ?? []
-          }
-          title="Color"
-          onSelected={selected => {
-            setSelectedColor(
-              product.variations?.color.find(color =>
-                isRGBColor(color) ? color.name === selected : color === selected,
-              ) ?? null,
-            );
-          }}
-        />
-        <UnscrollableList
-          list={product.variations?.size.map(size => size) ?? []}
-          title="Size"
-          onSelected={selected => {
-            setSelectedSize(product.variations?.size.find(size => size === selected) ?? null);
-          }}
-        />
-      </View>
+      <ProductVariations
+        colors={product.variations?.color}
+        sizes={product.variations?.size}
+        onColorSelected={handleColorSelected}
+        onSizeSelected={handleSizeSelected}
+      />
       <Button title="Add to Cart" onPress={handleAddToCart} />
     </View>
   );

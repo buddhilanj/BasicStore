@@ -3,8 +3,9 @@ import Color, { isRGBColor } from './ProductColor';
 import { ProductSize } from './ProductSize';
 
 export interface CartItem extends Product {
-  recordId: number;
+  key: string;
   quantity: number;
+  row: number;
   selectedVarient: CartItemVariation[];
 }
 
@@ -15,19 +16,9 @@ export type CartItemVariation =
     }
   | { type: 'color'; color: Color };
 
-interface WrapperProps {
-  new?: {
-    recordID: number;
-    product: Product;
-    quantity: number;
-    selectedVarient: CartItemVariation[];
-  };
-  cartItem?: CartItem;
-}
-
 // here we are not implementing CartItem interface as we dont want devs using this class to save data in redux
 export class CartItemWrapper {
-  recordId: number;
+  key: string;
 
   id: number;
 
@@ -43,18 +34,23 @@ export class CartItemWrapper {
 
   selectedVarient: CartItemVariation[];
 
-  constructor(obj: WrapperProps) {
-    if (!obj.cartItem && !obj.new) {
-      throw new Error('Invalid CartItemWrapper initialization');
-    }
-    this.recordId = obj.new?.recordID || obj.cartItem?.recordId || 0;
-    this.id = obj.new?.product.id || obj.cartItem?.id || 0;
-    this.title = obj.new?.product.title || obj.cartItem?.title || '';
-    this.price = obj.new?.product.price || obj.cartItem?.price || 0;
-    this.description = obj.new?.product.description || obj.cartItem?.description || '';
-    this.thumbnail = obj.new?.product.thumbnail || obj.cartItem?.thumbnail || '';
-    this.quantity = obj.new?.quantity || obj.cartItem?.quantity || 0;
-    this.selectedVarient = obj.new?.selectedVarient || obj.cartItem?.selectedVarient || [];
+  row: number;
+
+  constructor(
+    product: Product,
+    quantity: number,
+    selectedVarient: CartItemVariation[],
+    exsisting: { [key: string]: CartItem },
+  ) {
+    this.id = product.id;
+    this.title = product.title;
+    this.price = product.price;
+    this.description = product.description;
+    this.thumbnail = product.thumbnail;
+    this.quantity = quantity;
+    this.selectedVarient = selectedVarient;
+    this.key = this.getKey();
+    this.row = exsisting[this.key]?.row ?? Object.keys(exsisting).length;
   }
 
   isSameProduct(product: Product): boolean {
@@ -62,9 +58,9 @@ export class CartItemWrapper {
   }
 
   getCartItem = (): CartItem => {
-    const { recordId, id, title, price, description, thumbnail, quantity, selectedVarient } = this;
+    const { key, id, title, price, description, thumbnail, quantity, selectedVarient, row } = this;
     return {
-      recordId,
+      key,
       id,
       title,
       price,
@@ -72,21 +68,25 @@ export class CartItemWrapper {
       thumbnail,
       quantity,
       selectedVarient,
+      row,
     } satisfies CartItem;
   };
 
   getKey = (): string => {
-    return `${this.id}${this.selectedVarient?.map(
-      variant =>
-        `-${
-          variant.type === 'size'
-            ? `s.${variant.size}`
-            : `c.${
-                isRGBColor(variant.color)
-                  ? `R${variant.color.red}G${variant.color.green}B${variant.color.blue}`
-                  : variant.color
-              }`
-        }`,
-    )}`;
+    return `${this.id}${this.selectedVarient
+      ?.map(
+        variant =>
+          `-${
+            variant.type === 'size'
+              ? `s.${variant.size}`
+              : `c.${
+                  isRGBColor(variant.color)
+                    ? `R${variant.color.red}G${variant.color.green}B${variant.color.blue}`
+                    : variant.color
+                }`
+          }`,
+      )
+      .sort((a, b) => a.localeCompare(b))
+      .join('')}`;
   };
 }

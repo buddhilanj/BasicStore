@@ -2,24 +2,42 @@
 import mockColors from '@assets/json/mockColors.json';
 import Color from '@models/ProductColor';
 
-const staticColors = ['black', 'white'];
+const staticColors = [
+  { name: 'Black', color: 'black' },
+  { name: 'White', color: 'white' },
+];
 
-export function getMockColors(): Color[] {
-  const colors: Color[] = [];
-  const pushed: number[] = [];
-  for (let i = 0; i < 3; i++) {
-    let random = Math.floor(Math.random() * mockColors.colors.length);
-    while (pushed.includes(random)) {
-      random = Math.floor(Math.random() * mockColors.colors.length);
+export function getRandomColorIndexes(exclude: number[], count: number): number[] {
+  const available = mockColors.colors.length;
+  const result: number[] = [];
+  let resultCount = 0; // using a seperate counter to avoid lint error
+  while (resultCount < count) {
+    const random = Math.floor(Math.random() * available);
+    if (!exclude.includes(random) && !result.includes(random)) {
+      result.push(random);
+      resultCount += 1; // since lint is disabling unary operators, we can't use ++resultCount
     }
-    colors.push({
-      name: mockColors.colors[random].name,
-      red: mockColors.colors[random].rgb.red,
-      green: mockColors.colors[random].rgb.green,
-      blue: mockColors.colors[random].rgb.blue,
-    });
-    pushed.push(random);
   }
-  colors.push(...staticColors);
+  return result;
+}
+
+function jsonToColor(index: number): Color {
+  return {
+    name: mockColors.colors[index].name,
+    red: mockColors.colors[index].rgb.red,
+    green: mockColors.colors[index].rgb.green,
+    blue: mockColors.colors[index].rgb.blue,
+  };
+}
+
+function addColor(array: Color[], ...color: Color[]): Color[] {
+  array.push(...color);
+  return array;
+}
+
+export function getMockColors(toPush: number[]): Color[] {
+  const colors: Color[] = [];
+  addColor(colors, ...toPush.map(jsonToColor));
+  addColor(colors, ...staticColors);
   return colors;
 }

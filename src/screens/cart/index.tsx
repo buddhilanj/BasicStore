@@ -20,7 +20,7 @@ export default function CartScreen() {
   };
 
   const handleChangeQty = (cartItem: CartItem, qty: number): void => {
-    dispatch(changeQuantity({ recordId: cartItem.recordId, quantity: qty }));
+    dispatch(changeQuantity({ key: cartItem.key, quantity: qty }));
   };
 
   const handleCheckout = (): void => {
@@ -29,7 +29,11 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CartView cartItems={cartItems} onRemove={handleRemove} onChangeAmount={handleChangeQty} />
+      <CartView
+        cartItems={Object.values(cartItems)}
+        onRemove={handleRemove}
+        onChangeAmount={handleChangeQty}
+      />
       <CartTotal total={total} onCheckout={handleCheckout} />
     </SafeAreaView>
   );
