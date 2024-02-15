@@ -4,7 +4,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 type IconButtonProps = {
   icon: keyof typeof Ionicons.glyphMap;
+  size?: number;
   onPress: () => void;
+} & typeof defaultProps;
+
+const defaultProps = {
+  size: 24,
 };
 
 const styles = StyleSheet.create({
@@ -13,10 +18,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function IconButton({ icon, onPress }: IconButtonProps) {
+export default function IconButton({ icon, size, onPress }: IconButtonProps) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Ionicons name={icon} size={24} color="black" />
+    <TouchableOpacity onPress={onPress} style={[styles.container]}>
+      <Ionicons name={icon} size={size} color="black" />
     </TouchableOpacity>
   );
 }
+
+IconButton.defaultProps = defaultProps;

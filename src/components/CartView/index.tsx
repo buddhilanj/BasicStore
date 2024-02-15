@@ -29,7 +29,7 @@ export default function CartView({ cartItems, onRemove, onChangeAmount }: CartVi
         renderItem={({ item }) => (
           <CartListItem cartItem={item} onRemove={onRemove} onChangeAmount={onChangeAmount} />
         )}
-        keyExtractor={item => `${item.recordId}`}
+        keyExtractor={item => `${item.key}`}
         ListEmptyComponent={EmptyCartView}
       />
     </SafeAreaView>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ViewProps } from 'react-native';
 
 type UnscrollableListProps = {
   list: string[];
   title: string;
   onSelected: (selected: string) => void;
-};
+} & ViewProps;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
@@ -13,11 +13,16 @@ const styles = StyleSheet.create({
   selected: { backgroundColor: 'green' },
 });
 
-export default function UnscrollableList({ list, title, onSelected }: UnscrollableListProps) {
+export default function UnscrollableList({
+  list,
+  title,
+  onSelected,
+  style,
+}: UnscrollableListProps) {
   const [selected, setSelected] = useState<string | null>(null);
   if (list.length === 0) return null;
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, style]}>
       <Text>{title}</Text>
       {list.map(item => (
         <TouchableOpacity
@@ -26,7 +31,7 @@ export default function UnscrollableList({ list, title, onSelected }: Unscrollab
             setSelected(item);
             onSelected?.(item);
           }}>
-          <Text style={[styles.text, selected === item ? styles.selected : {}]}>{item}</Text>
+          <Text style={[styles.text, selected === item && styles.selected]}>{item}</Text>
         </TouchableOpacity>
       ))}
     </View>

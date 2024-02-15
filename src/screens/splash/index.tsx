@@ -15,11 +15,11 @@ export default function SplashScreen() {
     if (isProductsLoaded) {
       navigation.navigate('AppStack');
     }
-  }, [isProductsLoaded]);
+  }, [navigation, isProductsLoaded]);
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
